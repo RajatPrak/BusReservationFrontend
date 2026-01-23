@@ -1,8 +1,12 @@
+import 'package:busreservationapp/datasource/app_data_source.dart';
 import 'package:busreservationapp/datasource/data_source.dart';
 import 'package:busreservationapp/datasource/dummy_data_source.dart';
+import 'package:busreservationapp/models/app_user.dart';
 import 'package:busreservationapp/models/bus_model.dart';
 import 'package:busreservationapp/models/response_model.dart';
+import 'package:busreservationapp/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
+import '../models/auth_response_model.dart';
 import '../models/bus_reservation.dart';
 import '../models/bus_schedule.dart';
 import '../models/but_route.dart';
@@ -21,7 +25,16 @@ class AppDataProvider extends ChangeNotifier {
   List<BusRoute> get routeList => _routeList;
 
   List<BusReservation> get reservationList => _reservationList;
-  final DataSource _dataSource = DummyDataSource();
+  final DataSource _dataSource = AppDataSource();
+
+  Future<AuthResponseModel?> login(AppUser user)async{
+    final response = await _dataSource.login(user);
+    if(response == null) return null;
+    await saveToken(response!.accessToken);
+    await saveLoginTime(response.logInTime);
+    await saveExpirationDuration(response.expirationDuration);
+    return response;
+  }
 
   Future<ResponseModel> addBus(Bus bus) {
     return _dataSource.addBus(bus);
