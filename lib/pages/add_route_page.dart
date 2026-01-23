@@ -2,7 +2,8 @@ import 'package:busreservationapp/datasource/temp_db.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/but_route.dart';
+import '../customwidgets/login_alert_dialog.dart';
+import '../models/bus_route.dart';
 import '../providers/app_data_provider.dart';
 import '../utils/constants.dart';
 import '../utils/helper_functions.dart';
@@ -92,7 +93,7 @@ class _AddRoutePageState extends State<AddRoutePage> {
                   width: 150,
                   child: ElevatedButton(
                     onPressed: addRoute,
-                    child: const Text('ADD ROUTE',style: TextStyle(color: Colors.black),),
+                    child: const Text('ADD ROUTE'),
                   ),
                 ),
               ),
@@ -106,7 +107,7 @@ class _AddRoutePageState extends State<AddRoutePage> {
   void addRoute() {
     if (_formKey.currentState!.validate()) {
       final route = BusRoute(
-        routeId: TempDB.tableRoute.length + 1,
+        //routeId: TempDB.tableRoute.length + 1,
         routeName: '$from-$to',
         cityFrom: from!,
         cityTo: to!,
@@ -115,9 +116,18 @@ class _AddRoutePageState extends State<AddRoutePage> {
       Provider.of<AppDataProvider>(context, listen: false)
           .addRoute(route)
           .then((response) {
-        if(response.responseStatus == ResponseStatus.SAVED) {
+        if (response.responseStatus == ResponseStatus.SAVED) {
           showMsg(context, response.message);
           resetFields();
+        } else if (response.responseStatus == ResponseStatus.EXPIRED ||
+            response.responseStatus == ResponseStatus.UNAUTHORIZED) {
+          showLoginAlertDialog(
+            context: context,
+            message: response.message,
+            callback: () {
+              Navigator.pushNamed(context, routeNameLoginPage);
+            },
+          );
         }
       });
 

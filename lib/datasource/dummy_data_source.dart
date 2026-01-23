@@ -5,7 +5,7 @@ import 'package:busreservationapp/models/auth_response_model.dart';
 import 'package:busreservationapp/models/bus_model.dart';
 import 'package:busreservationapp/models/bus_reservation.dart';
 import 'package:busreservationapp/models/bus_schedule.dart';
-import 'package:busreservationapp/models/but_route.dart';
+import 'package:busreservationapp/models/bus_route.dart';
 import 'package:busreservationapp/models/response_model.dart';
 import 'package:busreservationapp/utils/constants.dart';
 

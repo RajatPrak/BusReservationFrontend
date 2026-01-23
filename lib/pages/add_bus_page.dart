@@ -1,4 +1,6 @@
+import 'package:busreservationapp/customwidgets/login_alert_dialog.dart';
 import 'package:busreservationapp/datasource/temp_db.dart';
+import 'package:busreservationapp/pages/login_page.dart';
 import 'package:busreservationapp/providers/app_data_provider.dart';
 import 'package:busreservationapp/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,7 @@ class _AddBusPageState extends State<AddBusPage> {
   final seatController = TextEditingController();
   final nameController = TextEditingController();
   final numberController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,21 +43,20 @@ class _AddBusPageState extends State<AddBusPage> {
                   });
                 },
                 validator: (value) {
-                  if(value == null || value.isEmpty) {
+                  if (value == null || value.isEmpty) {
                     return 'Please select a Bus Type';
                   }
                 },
                 decoration: InputDecoration(
-                    errorStyle: const TextStyle(color: Colors.white70)
-                ),
+                    errorStyle: const TextStyle(color: Colors.white70)),
                 isExpanded: true,
                 value: busType,
                 hint: const Text('Select Bus Type'),
                 items: busTypes
                     .map((e) => DropdownMenuItem<String>(
-                  value: e,
-                  child: Text(e),
-                ))
+                          value: e,
+                          child: Text(e),
+                        ))
                     .toList(),
               ),
               const SizedBox(
@@ -131,18 +133,27 @@ class _AddBusPageState extends State<AddBusPage> {
   void addBus() {
     if (_formKey.currentState!.validate()) {
       final bus = Bus(
-        busId: TempDB.tableBus.length + 1, // remove this line if you save into MySql DB
+        //busId: TempDB.tableBus.length + 1, // remove this line if you save into MySql DB
         busName: nameController.text,
         busNumber: numberController.text,
         busType: busType!,
         totalSeat: int.parse(seatController.text),
       );
       Provider.of<AppDataProvider>(context, listen: false)
-      .addBus(bus)
-      .then((response) {
-        if(response.responseStatus == ResponseStatus.SAVED) {
+          .addBus(bus)
+          .then((response) {
+        if (response.responseStatus == ResponseStatus.SAVED) {
           showMsg(context, response.message);
           resetFields();
+        } else if (response.responseStatus == ResponseStatus.EXPIRED ||
+            response.responseStatus == ResponseStatus.UNAUTHORIZED) {
+          showLoginAlertDialog(
+            context: context,
+            message: response.message,
+            callback: () {
+              Navigator.pushNamed(context, routeNameLoginPage);
+            },
+          );
         }
       });
     }

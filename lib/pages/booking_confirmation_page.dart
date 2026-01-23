@@ -197,7 +197,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
             ),
             ElevatedButton(
               onPressed: _confirmBooking,
-              child: const Text('CONFIRM BOOKING',style: TextStyle(color: Colors.black),),
+              child: const Text('CONFIRM BOOKING'),
             )
           ],
         ),

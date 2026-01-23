@@ -1,5 +1,5 @@
 import 'package:busreservationapp/models/bus_schedule.dart';
-import 'package:busreservationapp/models/but_route.dart';
+import 'package:busreservationapp/models/bus_route.dart';
 import 'package:busreservationapp/providers/app_data_provider.dart';
 import 'package:busreservationapp/utils/constants.dart';
 import 'package:flutter/material.dart';

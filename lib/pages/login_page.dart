@@ -1,8 +1,8 @@
+import 'package:busreservationapp/models/app_user.dart';
+import 'package:busreservationapp/providers/app_data_provider.dart';
+import 'package:busreservationapp/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/app_user.dart';
-import '../providers/app_data_provider.dart';
-import '../utils/helper_functions.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -32,14 +32,14 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(32.0),
-                child: Text('Admin Login', textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),
+                child: Text('Admin Login', textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyLarge),
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: TextFormField(
                   controller: _userNameController,
                   decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.person_2_outlined),
+                    prefixIcon: Icon(Icons.person_2_outlined),
                       filled: true,
                       labelText: 'Username'
                   ),
@@ -60,14 +60,14 @@ class _LoginPageState extends State<LoginPage> {
                       prefixIcon: const Icon(Icons.lock),
                       filled: true,
                       labelText: 'Password',
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isObscure = !isObscure;
-                          });
-                        },
-                        icon: Icon(isObscure ? Icons.visibility_off : Icons.visibility),
-                      )
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isObscure = !isObscure;
+                        });
+                      },
+                      icon: Icon(isObscure ? Icons.visibility_off : Icons.visibility),
+                    )
                   ),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: _login,
-                    child: const Text('Login',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
+                    child: const Text('Login'),
                   ),
                 ),
               )
@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
       final userName = _userNameController.text;
       final password = _passwordController.text;
       final response = await Provider.of<AppDataProvider>(context, listen: false)
-          .login(AppUser(userName: userName, password: password));
+      .login(AppUser(userName: userName, password: password));
       if(response != null) {
         showMsg(context, response.message);
         Navigator.pop(context);
@@ -110,4 +110,3 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 }
-

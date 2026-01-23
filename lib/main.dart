@@ -21,38 +21,28 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        primarySwatch: Colors.lightGreen,
         brightness: Brightness.dark,
-        colorScheme: ColorScheme.dark(
-          primary: Colors.lightGreen, // This sets the primary color for dark theme
-          secondary: Colors.lightGreenAccent, // Optional: set secondary color
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.lightGreen, // sets ElevatedButton color
-          ),
-        ),
       ),
-      home: const SearchPage(),
       initialRoute: routeNameHome,
       routes: {
-        routeNameHome : (context)=> const SearchPage(),
-        routeNameSearchResultPage : (context)=> const SearchResultPage(),
-        routeNameSeatPlanPage: (context)=> const SeatPlanPage(),
-        routeNameBookingConfirmationPage: (context)=> const BookingConfirmationPage(),
+        routeNameHome : (context) => const SearchPage(),
+        routeNameSearchResultPage : (context) => const SearchResultPage(),
+        routeNameSeatPlanPage : (context) => const SeatPlanPage(),
+        routeNameBookingConfirmationPage : (context) => const BookingConfirmationPage(),
         routeNameAddBusPage : (context) => const AddBusPage(),
         routeNameAddRoutePage : (context) => const AddRoutePage(),
         routeNameAddSchedulePage : (context) => const AddSchedulePage(),
         routeNameReservationPage : (context) => const ReservationPage(),
-        routeNameLoginPage : (context) => const LoginPage()
+        routeNameLoginPage : (context) => const LoginPage(),
+
       },
     );
   }
 }
-

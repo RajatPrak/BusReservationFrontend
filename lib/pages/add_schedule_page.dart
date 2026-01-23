@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../customwidgets/login_alert_dialog.dart';
 import '../datasource/temp_db.dart';
 import '../models/bus_model.dart';
 import '../models/bus_schedule.dart';
-import '../models/but_route.dart';
+import '../models/bus_route.dart';
 import '../providers/app_data_provider.dart';
 import '../utils/constants.dart';
 import '../utils/helper_functions.dart';
@@ -174,7 +175,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
     }
     if (_formKey.currentState!.validate()) {
       final schedule = BusSchedule(
-        scheduleId: TempDB.tableSchedule.length + 1,
+        //scheduleId: TempDB.tableSchedule.length + 1,
         bus: bus!,
         busRoute: busRoute!,
         departureTime: getFormattedTime(timeOfDay!),
@@ -183,11 +184,20 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
         processingFee: int.parse(feeController.text),
       );
       Provider.of<AppDataProvider>(context, listen: false)
-      .addSchedule(schedule)
-      .then((response) {
-        if(response.responseStatus == ResponseStatus.SAVED) {
+          .addSchedule(schedule)
+          .then((response) {
+        if (response.responseStatus == ResponseStatus.SAVED) {
           showMsg(context, response.message);
           resetFields();
+        } else if (response.responseStatus == ResponseStatus.EXPIRED ||
+            response.responseStatus == ResponseStatus.UNAUTHORIZED) {
+          showLoginAlertDialog(
+            context: context,
+            message: response.message,
+            callback: () {
+              Navigator.pushNamed(context, routeNameLoginPage);
+            },
+          );
         }
       });
 

@@ -108,7 +108,7 @@ class _SearchPageState extends State<SearchPage> {
                   width: 150,
                   child: ElevatedButton(
                     onPressed: _search,
-                    child: const Text('SEARCH',style: TextStyle(color: Colors.black),),
+                    child: const Text('SEARCH'),
                   ),
                 ),
               )
@@ -142,7 +142,11 @@ class _SearchPageState extends State<SearchPage> {
       Provider.of<AppDataProvider>(context, listen: false)
           .getRouteByCityFromAndCityTo(fromCity!, toCity!)
           .then((route) {
-        Navigator.pushNamed(context, routeNameSearchResultPage, arguments: [route, getFormattedDate(departureDate!)]);
+            if(route != null) {
+              Navigator.pushNamed(context, routeNameSearchResultPage, arguments: [route, getFormattedDate(departureDate!)]);
+            } else {
+              showMsg(context, 'Could not find any route');
+            }
       });
     }
   }

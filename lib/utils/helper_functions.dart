@@ -1,8 +1,10 @@
-import 'package:busreservationapp/utils/constants.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'constants.dart';
 
 String getFormattedDate(DateTime dt, {String pattern = 'dd/MM/yyyy'}) {
   return DateFormat(pattern).format(dt);
@@ -23,39 +25,38 @@ int getGrandTotal(int discount, int totalSeatBooked, int price, int fee) {
   return (priceAfterDiscount + fee).toInt();
 }
 
-Future<bool> saveToken(String token)async{
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.setString(accessToken,token);
+Future<bool> saveToken(String token) async {
+  final pref = await SharedPreferences.getInstance();
+  return pref.setString(accessToken, token);
 }
 
-Future<String> getToken()async{
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getString(accessToken)??"";
+Future<String> getToken() async {
+  final pref = await SharedPreferences.getInstance();
+  return pref.getString(accessToken) ?? '';
 }
 
-Future<bool>saveLoginTime(int time)async{
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.setInt(loginTime, time);
+Future<bool> saveLoginTime(int time) async {
+  final pref = await SharedPreferences.getInstance();
+  return pref.setInt(loginTime, time);
 }
 
-Future<int> getLoginTime()async{
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getInt(loginTime)??0;
+Future<int> getLoginTime() async {
+  final pref = await SharedPreferences.getInstance();
+  return pref.getInt(loginTime) ?? 0;
 }
 
-Future<bool>saveExpirationDuration(int time)async{
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.setInt(expirationDuration, time);
+Future<bool> saveExpirationDuration(int duration) async {
+  final pref = await SharedPreferences.getInstance();
+  return pref.setInt(expirationDuration, duration);
 }
 
-Future<int>getExpirationTime()async{
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getInt(expirationDuration)??0;
+Future<int> getExpirationDuration() async {
+  final pref = await SharedPreferences.getInstance();
+  return pref.getInt(expirationDuration) ?? 0;
 }
 
-Future<bool> hasTokenExpired()async{
+Future<bool> hasTokenExpired() async {
   final loginTime = await getLoginTime();
-  final expirationDuration = await getExpirationTime();
-
-  return DateTime.now().millisecondsSinceEpoch - loginTime > expirationDuration;
+  final expDuration = await getExpirationDuration();
+  return DateTime.now().millisecondsSinceEpoch - loginTime > expDuration;
 }
